@@ -1,0 +1,42 @@
+<div>
+  <div class="mb-3 flex justify-between items-center">
+    <h2 class="font-extrabold text-4xl leading-loose self-end">
+      {{ selected_day | date : "MMMM y" }}
+    </h2>
+    <div class="flex gap-2 items-center">
+      <div
+        class="flex items-center justify-center rounded-full bg-gray-200 cursor-pointer"
+      >
+        <span
+          class="material-symbols-outlined nav focus:outline-none"
+          (click)="prev()"
+        >
+          navigate_before
+        </span>
+      </div>
+      <div
+        class="flex items-center justify-center rounded-full bg-gray-200 cursor-pointer"
+      >
+        <span
+          class="material-symbols-outlined nav rounded border-gray-400 focus:outline-none"
+          (click)="next()"
+        >
+          navigate_next
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="mt-4 grid grid-rows-2 grid-cols-6 gap-x-16 gap-y-20"
+    cdkDropListGroup
+  >
+    <app-single-day
+      *ngFor="let day of weekly_tasks; index as i"
+      [index]="i"
+      [day]="day"
+      (fetchData)="onFetchData(selected_day)"
+      [ngClass]="i < 5 ? 'row-span-2' : ''"
+    ></app-single-day>
+  </div>
+</div>

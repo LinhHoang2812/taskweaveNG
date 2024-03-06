@@ -1,0 +1,131 @@
+<div
+  *ngIf="section"
+  class="p-2 pb-4 w-[300px] rounded hover:border-[1px] hover:border-gray-200 hover:shadow-md shadow-gray-100 flex flex-col gap-4"
+  cdkDropList
+  [cdkDropListData]="section.tasks"
+  (cdkDropListDropped)="drop($event)"
+>
+  <div class="flex justify-between items-center group">
+    <form (submit)="updateTitle()">
+      <input
+        type="text"
+        [(ngModel)]="section.title"
+        name="section"
+        class="font-semibold text-gray-500 capitalize focus:outline-none w-full p-1 focus:border-[1px] focus:border-gray-300 rounded"
+      />
+    </form>
+    <span
+      class="hidden material-symbols-outlined trash group-hover:block cursor-pointer"
+      (click)="deleteSection()"
+    >
+      delete
+    </span>
+  </div>
+  <div class="flex flex-col gap-4">
+    <div
+      *ngFor="let task of section.tasks"
+      class="px-2 py-1 rounded-md border-[1px] border-gray-200 hover:shadow-sm hover:shadow-gray-200 group cursor-pointer"
+      cdkDrag
+    >
+      <div class="flex justify-between items-center">
+        <p
+          class="capitalize text-gray-500"
+          (click)="openDialog(task.title, task.id, task.des, task.due_date)"
+        >
+          {{ task.title }}
+        </p>
+        <span
+          class="hidden material-symbols-outlined trash group-hover:block cursor-pointer"
+          (click)="deleteTask(task.id)"
+        >
+          delete
+        </span>
+      </div>
+      <p
+        class="text-sm text-gray-500"
+        (click)="openDialog(task.title, task.id, task.des, task.due_date)"
+      >
+        {{ task.des }}
+      </p>
+      <div class="mt-1 flex gap-1 items-center" *ngIf="task.due_date">
+        <span class="material-symbols-outlined cal"> calendar_today </span>
+        <p class="text-xs text-red-400">
+          {{ task.due_date | date : "EE, MMM dd" }}
+        </p>
+      </div>
+    </div>
+  </div>
+  <div
+    class="flex gap-2 items-center cursor-pointer group add-task"
+    *ngIf="(projectService.activeFormId | async) !== section_id"
+    (click)="activeForm(this.section_id)"
+    cdkDrag
+    cdkDragDisabled="true"
+  >
+    <span class="material-symbols-outlined add"> add_circle </span>
+    <p class="text-sm text-gray-500 group-hover:text-red-400">Add task</p>
+  </div>
+  <form
+    class="flex flex-col gap-4 w-full p-2 border-[1px] border-gray-300 rounded"
+    *ngIf="(projectService.activeFormId | async) === section_id"
+    [formGroup]="form"
+    (submit)="createTask()"
+    cdkDrag
+    cdkDragDisabled="true"
+  >
+    <input
+      class="focus:outline-none border-none text-gray-500"
+      placeholder="Task name"
+      formControlName="title"
+    />
+    <!-- <input
+      class="focus:outline-none border-none text-sm text-gray-500"
+      placeholder="description..."
+      formControlName="des"
+    /> -->
+    <textarea
+      class="focus:outline-none border-none text-sm text-gray-500"
+      placeholder="description..."
+      formControlName="des"
+      rows="3"
+    ></textarea>
+    <div class="flex justify-between gap-10">
+      <div
+        class="p-1 flex items-center gap-2 rounded border-[1px] border-gray-400"
+      >
+        <button
+          (click)="picker.open()"
+          class="flex justify-center items-center"
+          type="button"
+        >
+          <span class="material-symbols-outlined"> calendar_today </span>
+        </button>
+        <div>
+          <mat-datepicker #picker></mat-datepicker>
+          <input
+            class="w-full focus:outline-none text-sm text-gray-500"
+            matInput
+            [matDatepicker]="picker"
+            placeholder="Due date"
+            formControlName="due_date"
+          />
+        </div>
+      </div>
+      <div class="flex gap-2">
+        <button
+          class="px-1 flex justify-center items-center text-white bg-red-400 rounded"
+          type="submit"
+          [disabled]="!form.valid"
+        >
+          <span class="material-symbols-outlined task"> send </span>
+        </button>
+        <button
+          class="px-1 flex justify-center items-center text-white bg-gray-400 rounded"
+          (click)="activeForm(null)"
+        >
+          <span class="material-symbols-outlined task"> close </span>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

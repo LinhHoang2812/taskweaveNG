@@ -1,0 +1,19 @@
+<main class="grid grid-cols-[auto_1fr]">
+  <app-sidebar></app-sidebar>
+  <section
+    [ngClass]="coreService.isSidebarOpen ? 'flex gap-4' : 'flex gap-10'"
+    class=""
+  >
+    <div [ngClass]="coreService.isSidebarOpen ? 'p-4 hidden' : 'p-4 block'">
+      <span
+        class="material-symbols-outlined cursor-pointer"
+        (click)="coreService.isSidebarOpen = true"
+      >
+        dock_to_left
+      </span>
+    </div>
+    <div class="w-full h-full">
+      <router-outlet></router-outlet>
+    </div>
+  </section>
+</main>

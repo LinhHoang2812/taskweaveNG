@@ -1,0 +1,54 @@
+<form class="flex flex-col gap-5" [formGroup]="form" (submit)="onSave()">
+  <p
+    *ngIf="!this.form.get('email').valid && this.form.get('email').touched"
+    class="text-sm text-red-500"
+  >
+    Please enter valid email address
+  </p>
+  <div
+    class="p-1 rounded border-2 border-gray-200 flex items-center justify-center cursor-pointer"
+  >
+    <input
+      type="email"
+      placeholder="Enter your email"
+      class="border-none w-full h-8 focus:outline-none"
+      name="email"
+      formControlName="email"
+    />
+  </div>
+  <p
+    *ngIf="
+      !this.form.get('password').valid && this.form.get('password').touched
+    "
+    class="text-sm text-red-500"
+  >
+    Password must has at least 6 characters
+  </p>
+
+  <div
+    class="p-1 rounded border-2 border-gray-200 flex items-center justify-center cursor-pointer"
+  >
+    <input
+      type="password"
+      placeholder="Enter your password"
+      class="border-none w-full h-8 focus:outline-none"
+      name="password"
+      formControlName="password"
+    />
+  </div>
+  <button
+    type="submit"
+    [disabled]="!form.valid"
+    class="py-3 rounded bg-red-500 hover:bg-red-700 text-white font-semibold flex items-center justify-center cursor-pointer"
+  >
+    Sign up
+  </button>
+  <p class="mt-10 text-center text-sm">
+    Already have an account?
+    <span
+      routerLink="/auth/signin"
+      class="border-b-[1px] border-gray-950 cursor-pointer focus:outline-none"
+      >Sign in</span
+    >
+  </p>
+</form>

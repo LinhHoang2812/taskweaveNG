@@ -1,0 +1,128 @@
+<aside
+  [ngClass]="
+    coreService.isSidebarOpen == true
+      ? 'p-4 w-[250px] bg-stone-100 min-h-screen  ease-in-out duration-500 flex flex-col gap-20'
+      : 'ml-[-250px] p-4 w-[250px] bg-stone-100 h-screen  ease-in-out duration-500'
+  "
+  (click)="closeProjectForm($event)"
+>
+  <div class="flex justify-between">
+    <span
+      class="material-symbols-outlined cursor-pointer"
+      (click)="authService.logout()"
+    >
+      logout
+    </span>
+
+    <span
+      class="material-symbols-outlined cursor-pointer"
+      (click)="coreService.isSidebarOpen = false"
+    >
+      dock_to_left
+    </span>
+  </div>
+  <div class="flex flex-col gap-4">
+    <h5 class="text-gray-600 font-semibold">Planner</h5>
+    <div
+      routerLink="/inbox"
+      [ngClass]="
+        activeUrl === '/inbox'
+          ? 'flex justify-between items-center cursor-pointer focus:outline-none text-red-400 text-sm active '
+          : 'flex justify-between items-center cursor-pointer focus:outline-none text-gray-500 text-sm '
+      "
+    >
+      <div class="flex gap-1 items-center">
+        <span class="material-symbols-outlined"> inbox </span>
+
+        <p [ngClass]="activeUrl === '/inbox' ? 'font-semibold' : ''">Inbox</p>
+      </div>
+      <p [ngClass]="activeUrl === '/inbox' ? '' : 'text-gray-400'">
+        {{ this.len }}
+      </p>
+    </div>
+    <div
+      [ngClass]="
+        activeUrl === '/'
+          ? 'flex gap-1 items-center cursor-pointer focus:outline-none text-red-400 text-sm active '
+          : 'flex gap-1 items-center cursor-pointer focus:outline-none text-gray-500 text-sm '
+      "
+      routerLink="/"
+    >
+      <span class="material-symbols-outlined">calendar_month</span>
+
+      <p [ngClass]="activeUrl === '/' ? 'font-semibold' : ' '">
+        Weekly planner
+      </p>
+    </div>
+  </div>
+  <div class="flex flex-col gap-4 grow" *ngIf="projects">
+    <div class="flex justify-between items-center cursor-pointer">
+      <h5 class="text-gray-600 font-semibold">Projects</h5>
+      <span
+        class="material-symbols-outlined hover:text-red-400 project-form"
+        (click)="addProject = true"
+      >
+        add_circle
+      </span>
+    </div>
+
+    <div [ngClass]="addProject ? 'block ' : 'hidden'">
+      <form (submit)="onSave()" class="project-form">
+        <input
+          class="border-none focus:outline-none p-1 text-sm project-form"
+          type="text"
+          [(ngModel)]="projectName"
+          name="projectName"
+          placeholder="Project name..."
+        />
+      </form>
+    </div>
+
+    <cdk-virtual-scroll-viewport
+      [itemSize]="projects.length"
+      class="grow h-full"
+    >
+      <div
+        cdkDropList
+        [cdkDropListData]="projects"
+        (cdkDropListDropped)="drop($event)"
+      >
+        <div
+          class="mt-4 flex justify-between items-center group"
+          *ngFor="let p of projects"
+          cdkDrag
+        >
+          <div class="flex gap-1 cursor-pointer">
+            <span
+              class="material-symbols-outlined"
+              [ngClass]="
+                p.id === activeId
+                  ? 'material-symbols-outlined activeId'
+                  : 'material-symbols-outlined'
+              "
+            >
+              tag
+            </span>
+            <p
+              [ngClass]="
+                p.id === activeId
+                  ? 'text-sm text-red-400 font-semibold focus:outline-none'
+                  : 'text-sm text-gray-500 focus:outline-none'
+              "
+              [routerLink]="['projects', p.id]"
+            >
+              {{ p.title }}
+            </p>
+          </div>
+          <span
+            class="hidden material-symbols-outlined trash mt-[-5px] group-hover:block cursor-pointer"
+            (click)="deleteProject(p.id)"
+          >
+            delete
+          </span>
+        </div>
+      </div>
+    </cdk-virtual-scroll-viewport>
+    <!-- *cdkVirtualFor="let p of projects" -->
+  </div>
+</aside>

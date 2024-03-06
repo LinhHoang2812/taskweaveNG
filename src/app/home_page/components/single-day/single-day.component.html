@@ -1,0 +1,55 @@
+<div cdkDropList [cdkDropListData]="tasks" (cdkDropListDropped)="drop($event)">
+  <div class="flex justify-between border-b-2 border-gray-400">
+    <h5 class="font-bold self-end">{{ due_date | date : "dd.MM" }}</h5>
+    <h5
+      [ngClass]="isToday ? 'text-2xl text-red-300' : 'text-2xl text-gray-300'"
+    >
+      {{ day_of_week }}
+    </h5>
+  </div>
+  <div class="my-5 flex flex-col gap-4">
+    <div
+      *ngFor="let item of tasks"
+      class="group flex justify-between items-end cursor-pointer example-box border-b-[1px] border-gray-200"
+      cdkDrag
+    >
+      <!-- <form class="w-[90%]">
+        <input
+          type="text"
+          [value]="item.des"
+          class="focus:outline-none w-full"
+        />
+      </form> -->
+      <div class="flex gap-1 items-center">
+        <span class="material-symbols-outlined note" *ngIf="item.des">
+          note_stack
+        </span>
+        <p (click)="openDialog(item.title, item.id, item.des)">
+          {{ item.title }}
+        </p>
+      </div>
+
+      <span
+        class="material-symbols-outlined trash hidden cursor-pointer group-hover:block"
+        (click)="delete_day_task(item.id)"
+      >
+        delete
+      </span>
+    </div>
+  </div>
+  <div
+    #form
+    class="border-b-[1px] border-gray-200 cursor-pointer"
+    cdkDrag
+    cdkDragDisabled="true"
+  >
+    <form class="w-[90%]" (ngSubmit)="create_day_task()">
+      <input
+        type="text"
+        class="w-full focus:outline-none"
+        [(ngModel)]="task_title"
+        name="task_des"
+      />
+    </form>
+  </div>
+</div>

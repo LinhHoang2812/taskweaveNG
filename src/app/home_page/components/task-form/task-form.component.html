@@ -1,0 +1,62 @@
+<div class="min-h-[250px] w-[500px] p-4">
+  <div class="flex gap-2 items-center" *ngIf="!this.data.section_id">
+    <span class="material-symbols-outlined"> calendar_today </span>
+    <p class="text-sm text-gray-500">
+      {{ data.due_date | date : "EEE, d MMM y" }}
+    </p>
+  </div>
+  <div class="p-1 flex items-center gap-2" *ngIf="this.data.section_id">
+    <button
+      (click)="picker.open()"
+      class="flex justify-center items-center focus:outline-none"
+      type="button"
+    >
+      <span class="material-symbols-outlined"> calendar_today </span>
+    </button>
+    <div>
+      <mat-datepicker #picker></mat-datepicker>
+      <input
+        class="w-full focus:outline-none text-sm text-gray-500"
+        matInput
+        [matDatepicker]="picker"
+        placeholder="Due date"
+        [(ngModel)]="this.data.due_date"
+      />
+    </div>
+  </div>
+
+  <div class="mt-8">
+    <form class="flex flex-col gap-8" (ngSubmit)="onSave()">
+      <div class="border-b-[1px] border-gray-400">
+        <div
+          contenteditable="true"
+          class="text-2xl border-none w-full focus:outline-none"
+          #title
+        >
+          {{ data.title }}
+        </div>
+      </div>
+      <div>
+        <div
+          contenteditable="true"
+          class="border-none w-full focus:outline-none"
+          #des
+        >
+          {{ data.des }}
+        </div>
+      </div>
+
+      <div class="flex gap-2">
+        <button class="px-2 text-white bg-red-400 rounded" type="submit">
+          Save
+        </button>
+        <button
+          class="px-2 text-white bg-gray-400 rounded"
+          (click)="dialogRef.close()"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

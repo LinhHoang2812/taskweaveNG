@@ -22,7 +22,7 @@ export class HomeService {
 
   get_weekly_tasks(day: any): Partial<Observable<DailyTask[]>> {
     return this.http.get<DailyTask[]>(
-      `http://localhost:3000/api/v1/weekly_tasks?day=${day}`,
+      `https://taskweaveapi.onrender.com/api/v1/weekly_tasks?day=${day}`,
       {
         headers: this.headers,
       }
@@ -33,19 +33,22 @@ export class HomeService {
     due_date: string;
   }): Partial<Observable<Task>> {
     return this.http.post<Task>(
-      'http://localhost:3000/api/v1/day_tasks',
+      'https://taskweaveapi.onrender.com/api/v1/day_tasks',
       { task: payload },
       { headers: this.headers }
     );
   }
   delete_day_task(id: string) {
-    return this.http.delete(`http://localhost:3000/api/v1/day_tasks/${id}`, {
-      headers: this.headers,
-    });
+    return this.http.delete(
+      `https://taskweaveapi.onrender.com/api/v1/day_tasks/${id}`,
+      {
+        headers: this.headers,
+      }
+    );
   }
   update_tasks_multiple(tasks: Task[]) {
     return this.http.put(
-      `http://localhost:3000/api/v1/update_day_tasks_multiple`,
+      `https://taskweaveapi.onrender.com/api/v1/update_day_tasks_multiple`,
       {
         tasks: tasks,
       },
@@ -54,15 +57,18 @@ export class HomeService {
   }
   update_day_task(id: string, task: { title: string; des: string }) {
     return this.http.put(
-      `http://localhost:3000/api/v1/day_tasks/${id}`,
+      `https://taskweaveapi.onrender.com/api/v1/day_tasks/${id}`,
       { task: task },
       { headers: this.headers }
     );
   }
 
   get_today_tasks(): Partial<Observable<Task[]>> {
-    return this.http.get<Task[]>('http://localhost:3000/api/v1/today_tasks', {
-      headers: this.headers,
-    });
+    return this.http.get<Task[]>(
+      'https://taskweaveapi.onrender.com/api/v1/today_tasks',
+      {
+        headers: this.headers,
+      }
+    );
   }
 }

@@ -33,7 +33,7 @@ export class WelcomePageComponent {
     const button = document.getElementById('g_id_signin');
 
     google.accounts.id.initialize({
-      client_id: env.id,
+      client_id: env.API_KEY,
 
       callback: (res: any, error: any) => {
         const cred = <any>jwtDecode(res.credential);

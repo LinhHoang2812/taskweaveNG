@@ -16,7 +16,7 @@ export class AuthService {
     uid: string;
   }): Partial<Observable<{ token: string }>> {
     return this.http.post<{ token: string }>(
-      'http://localhost:3000/api/v1/oauth_signin',
+      'https://taskweaveapi.onrender.com/api/v1/oauth_signin',
       { user: payload }
     );
   }
@@ -25,14 +25,14 @@ export class AuthService {
     password: string;
   }): Partial<Observable<{ token: string }>> {
     return this.http.post<{ token: string }>(
-      'http://localhost:3000/api/v1/registrations',
+      'https://taskweaveapi.onrender.com/api/v1/registrations',
       { user: payload }
     );
   }
 
   login(payload: { email: string; password: string }) {
     return this.http.post<{ token: string }>(
-      'http://localhost:3000/api/v1/signin',
+      'https://taskweaveapi.onrender.com/api/v1/signin',
       payload
     );
   }

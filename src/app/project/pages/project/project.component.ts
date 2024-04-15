@@ -18,6 +18,7 @@ export class ProjectComponent {
   project: Project;
   sectionName: string;
   isAddSectionForm: boolean;
+  isLoading: boolean = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -31,6 +32,7 @@ export class ProjectComponent {
     this.route.params.subscribe((params: Params) => {
       this.projectService.get_project(params['id']).subscribe((res) => {
         this.project = res;
+        this.isLoading = false;
         this.isAddSectionForm = res.sections.length == 0;
       });
     });

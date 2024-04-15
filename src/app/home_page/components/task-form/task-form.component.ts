@@ -24,6 +24,7 @@ import { ActivatedRoute } from '@angular/router';
 export class TaskFormComponent {
   @ViewChild('des') des: ElementRef;
   @ViewChild('title') title: ElementRef;
+  isLoading: boolean = false;
 
   constructor(
     public dialogRef: DialogRef<string>,
@@ -35,6 +36,7 @@ export class TaskFormComponent {
   ngOnInit() {}
 
   onSave() {
+    this.isLoading = true;
     if (!this.data.section_id) {
       this.homeService
         .update_day_task(this.data.id, {
@@ -71,6 +73,7 @@ export class TaskFormComponent {
         )
         .subscribe((res) => {
           this.dialogRef.close('refetch');
+          this.isLoading = false;
           this.homeService.refetchInbox.next(true);
         });
     }

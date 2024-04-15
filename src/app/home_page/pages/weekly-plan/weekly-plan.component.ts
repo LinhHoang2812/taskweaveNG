@@ -9,6 +9,7 @@ import { HomeService } from '../../services/home.service';
 })
 export class WeeklyPlanComponent {
   fullday: Date = new Date();
+  isLoading: boolean = true;
 
   selected_day: string = this.getDay(new Date());
 
@@ -25,6 +26,7 @@ export class WeeklyPlanComponent {
   onFetchData(day: any) {
     this.homeService.get_weekly_tasks(day).subscribe((res: DailyTask[]) => {
       this.weekly_tasks = res;
+      this.isLoading = false;
       this.last_day_of_week = res.find((item, i) => i === res.length - 1).date;
       this.first_day_of_week = res.find((item, i) => i === 0).date;
     });

@@ -23,6 +23,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @NgModule({
   declarations: [
     AppComponent,
@@ -52,6 +53,7 @@ import { MatInputModule } from '@angular/material/input';
     MatDatepickerModule,
     MatNativeDateModule,
     MatInputModule,
+    MatProgressSpinnerModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

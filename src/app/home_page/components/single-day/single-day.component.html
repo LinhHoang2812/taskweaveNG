@@ -43,13 +43,26 @@
     cdkDrag
     cdkDragDisabled="true"
   >
-    <form class="w-[90%]" (ngSubmit)="create_day_task()">
+    <form class="w-[90%] relative" (ngSubmit)="create_day_task()">
       <input
         type="text"
         class="w-full focus:outline-none"
         [(ngModel)]="task_title"
         name="task_des"
       />
+      <div
+        [ngClass]="
+          isLoading
+            ? 'absolute w-full h-full top-0 left-0 flex justify-center'
+            : ''
+        "
+      >
+        <mat-spinner
+          [diameter]="20"
+          color="primary"
+          *ngIf="isLoading"
+        ></mat-spinner>
+      </div>
     </form>
   </div>
 </div>

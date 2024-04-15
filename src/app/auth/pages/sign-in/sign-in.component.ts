@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 })
 export class SignInComponent {
   form: FormGroup;
+  isLoading: boolean = false;
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
@@ -22,11 +23,15 @@ export class SignInComponent {
     });
   }
   onSave() {
-    this.authService
-      .login(this.form.value)
-      .subscribe((res: { token: string }) => {
-        this.authService.setToken(res.token);
-        this.router.navigate(['/']);
-      });
+    this.isLoading = true;
+    if (this.form.valid) {
+      this.authService
+        .login(this.form.value)
+        .subscribe((res: { token: string }) => {
+          this.authService.setToken(res.token);
+          this.isLoading = false;
+          this.router.navigate(['/']);
+        });
+    }
   }
 }

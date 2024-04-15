@@ -50,9 +50,14 @@
     >
   </p>
 </form> -->
-<form class="flex flex-col gap-5" [formGroup]="form" (submit)="onSave()">
+<form
+  class="flex flex-col gap-5"
+  [formGroup]="form"
+  #ngForm="ngForm"
+  (submit)="onSave()"
+>
   <p
-    *ngIf="!this.form.get('email').valid && this.form.get('email').touched"
+    *ngIf="!this.form.get('email').valid && ngForm.submitted"
     class="text-sm text-red-500"
   >
     Please enter valid email address
@@ -69,9 +74,7 @@
     />
   </div>
   <p
-    *ngIf="
-      !this.form.get('password').valid && this.form.get('password').touched
-    "
+    *ngIf="!this.form.get('password').valid && ngForm.submitted"
     class="text-sm text-red-500"
   >
     Password must has at least 6 characters
@@ -90,10 +93,11 @@
   </div>
   <button
     type="submit"
-    [disabled]="!form.valid"
     class="py-3 rounded bg-red-500 hover:bg-red-700 text-white font-semibold flex items-center justify-center cursor-pointer"
   >
-    Sign in
+    <mat-spinner [diameter]="30" color="accent" *ngIf="isLoading"></mat-spinner>
+
+    <span *ngIf="!isLoading">Sign in</span>
   </button>
   <p class="mt-10 text-center text-sm">
     Dont have an account?

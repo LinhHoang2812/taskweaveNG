@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 })
 export class SignUpComponent {
   form: FormGroup;
+  isLoading: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -23,10 +24,12 @@ export class SignUpComponent {
     });
   }
   onSave() {
+    this.isLoading = true;
     this.authService
       .register(this.form.value)
       .subscribe((res: { token: string }) => {
         this.authService.setToken(res.token);
+        this.isLoading = false;
         this.router.navigate(['/']);
       });
   }

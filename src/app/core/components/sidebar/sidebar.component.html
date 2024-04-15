@@ -1,7 +1,7 @@
 <aside
   [ngClass]="
     coreService.isSidebarOpen == true
-      ? 'p-4 w-[250px] bg-stone-100 min-h-screen  ease-in-out duration-500 flex flex-col gap-20'
+      ? 'ml-[-250px] md:ml-0 p-4 w-[250px] bg-stone-100 h-full  ease-in-out duration-500 flex flex-col gap-20 '
       : 'ml-[-250px] p-4 w-[250px] bg-stone-100 h-screen  ease-in-out duration-500'
   "
   (click)="closeProjectForm($event)"

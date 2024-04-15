@@ -15,6 +15,7 @@ import {
 })
 export class InboxComponent {
   tasks: Task[];
+  isLoading: boolean = true;
   constructor(private homeService: HomeService, private dialog: Dialog) {}
   ngOnInit() {
     this.onFetchData();
@@ -22,6 +23,7 @@ export class InboxComponent {
   onFetchData() {
     this.homeService.get_today_tasks().subscribe((res: Task[]) => {
       this.tasks = res;
+      this.isLoading = false;
     });
   }
 

@@ -42,6 +42,7 @@ export class SingleDayComponent {
   due_date: string;
   isToday: boolean;
   is_originalDate_today: boolean;
+  isLoading: boolean = false;
 
   constructor(private homeService: HomeService, public dialog: Dialog) {}
 
@@ -64,18 +65,24 @@ export class SingleDayComponent {
     });
   }
   create_day_task() {
+    this.isLoading = true;
+
     this.homeService
       .create_day_task({ title: this.task_title, due_date: this.day.date })
       .subscribe((res) => {
         this.fetchData.emit();
+        this.isLoading = false;
         if (this.isToday) {
           this.homeService.refetchInbox.next(true);
         }
       });
   }
   delete_day_task(id: string) {
+    this.tasks = this.tasks.filter((task) => task.id !== id);
+
     this.homeService.delete_day_task(id).subscribe((res) => {
       this.fetchData.emit();
+
       if (this.isToday) {
         this.homeService.refetchInbox.next(true);
       }

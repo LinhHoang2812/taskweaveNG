@@ -1,4 +1,7 @@
-<div *ngIf="project" class="h-full">
+<div class="pt-20 flex justify-center">
+  <mat-spinner [diameter]="50" color="primary" *ngIf="isLoading"></mat-spinner>
+</div>
+<div *ngIf="project" class="h-full px-5">
   <cdk-virtual-scroll-viewport
     orientation="horizontal"
     [itemSize]="project.sections.length + 1"

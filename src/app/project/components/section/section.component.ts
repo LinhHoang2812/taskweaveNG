@@ -109,6 +109,11 @@ export class SectionComponent {
         this.fetchSection();
         this.isLoading = false;
         this.activeForm(null);
+        this.form = new FormGroup({
+          title: new FormControl(null, [Validators.required]),
+          des: new FormControl(null),
+          due_date: new FormControl(null),
+        });
       });
   }
   drop(event: CdkDragDrop<any[]>) {

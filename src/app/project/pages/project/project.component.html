@@ -1,4 +1,8 @@
-<div *ngIf="project" class="h-full pl-5 pt-12">
+<div
+  *ngIf="project"
+  class="h-full pl-5"
+  [ngClass]="coreService.isSidebarOpen ? 'py-12' : 'pt-0 pb-12'"
+>
   <cdk-virtual-scroll-viewport
     orientation="horizontal"
     [itemSize]="project.sections.length + 1"

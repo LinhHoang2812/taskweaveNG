@@ -8,6 +8,7 @@ import {
   CdkDropList,
   moveItemInArray,
 } from '@angular/cdk/drag-drop';
+import { CoreService } from 'src/app/core/services/core.service';
 
 @Component({
   selector: 'app-project',
@@ -23,7 +24,8 @@ export class ProjectComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    public coreService: CoreService
   ) {}
 
   ngOnInit() {

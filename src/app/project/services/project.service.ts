@@ -61,7 +61,7 @@ export class ProjectService {
   }
   delete_project(id: string): Partial<Observable<Project>> {
     return this.http.delete<Project>(
-      `https://taskweaveapi.onrender.com/api/v1/${id}`,
+      `https://taskweaveapi.onrender.com/api/v1/projects/${id}`,
 
       {
         headers: this.headers,

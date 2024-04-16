@@ -26,6 +26,8 @@ export class SidebarComponent {
   projectName: string;
   activeId: string;
   isLoading: boolean = false;
+  isDeleting: boolean = false;
+  deleteId: string;
   constructor(
     public coreService: CoreService,
     public authService: AuthService,
@@ -89,9 +91,15 @@ export class SidebarComponent {
   }
 
   deleteProject(id: string) {
+    this.deleteId = id;
+    this.isDeleting = true;
     this.projectService.delete_project(id).subscribe((res) => {
       this.projectService.get_projects().subscribe((res: Project[]) => {
         this.projects = res;
+        this.isDeleting = false;
+        if (this.deleteId === this.activeId) {
+          this.router.navigate(['projects', this.projects[0].id]);
+        }
       });
     });
   }

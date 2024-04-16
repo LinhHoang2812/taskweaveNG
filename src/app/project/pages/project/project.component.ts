@@ -30,10 +30,10 @@ export class ProjectComponent {
     this.refetchData();
   }
   refetchData() {
+    this.isLoading = true;
     this.route.params.subscribe((params: Params) => {
       this.projectService.get_project(params['id']).subscribe((res) => {
         this.project = res;
-        console.log(res);
 
         this.isLoading = false;
         this.isAddSectionForm = res.sections.length == 0;

@@ -101,7 +101,7 @@
         (cdkDropListDropped)="drop($event)"
       >
         <div
-          class="mt-4 flex justify-between items-center group"
+          class="mt-4 flex justify-between items-center group relative"
           *ngFor="let p of projects"
           cdkDrag
         >
@@ -133,6 +133,20 @@
           >
             delete
           </span>
+
+          <div
+            [ngClass]="
+              isDeleting
+                ? 'absolute w-full h-full top-0 left-0 flex justify-center'
+                : 'hidden'
+            "
+          >
+            <mat-spinner
+              [diameter]="20"
+              color="primary"
+              *ngIf="p.id === deleteId"
+            ></mat-spinner>
+          </div>
         </div>
       </div>
     </cdk-virtual-scroll-viewport>

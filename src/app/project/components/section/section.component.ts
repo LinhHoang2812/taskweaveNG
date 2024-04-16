@@ -30,10 +30,11 @@ import { TaskFormComponent } from 'src/app/home_page/components/task-form/task-f
   styleUrls: ['./section.component.scss'],
 })
 export class SectionComponent {
-  @Input() section_id: string;
+  @Input() section: Section;
   @Output() refetchData = new EventEmitter(null);
-  section: Section;
+  // section: Section;
   form: FormGroup;
+  isLoading: boolean = false;
   constructor(
     public projectService: ProjectService,
     private homeService: HomeService,
@@ -42,18 +43,22 @@ export class SectionComponent {
   ) {}
 
   ngOnInit() {
-    this.projectService
-      .get_section(this.route.snapshot.params['id'], this.section_id)
-      .subscribe((res: Section) => {
-        this.section = res;
-      });
-
+    this.fetchSection();
     this.form = new FormGroup({
       title: new FormControl(null, [Validators.required]),
       des: new FormControl(null),
       due_date: new FormControl(null),
     });
   }
+
+  fetchSection() {
+    this.projectService
+      .get_section(this.route.snapshot.params['id'], this.section.id)
+      .subscribe((res: Section) => {
+        this.section = res;
+      });
+  }
+
   activeForm(id: string) {
     this.projectService.activeFormId.next(id);
   }
@@ -61,22 +66,24 @@ export class SectionComponent {
     this.projectService
       .update_section(
         this.route.snapshot.params['id'],
-        this.section_id,
+        this.section.id,
         this.section.title
       )
       .subscribe((res: any) => {
         this.section = res;
-        this.refetchData.emit();
+        this.fetchSection();
+        // this.refetchData.emit();
       });
   }
   deleteSection() {
     this.projectService
-      .delete_section(this.route.snapshot.params['id'], this.section_id)
+      .delete_section(this.route.snapshot.params['id'], this.section.id)
       .subscribe((res) => {
         this.refetchData.emit();
       });
   }
   createTask() {
+    this.isLoading = true;
     let task: any;
     if (this.form.value.due_date) {
       const date = new Date(this.form.value.due_date);
@@ -94,10 +101,13 @@ export class SectionComponent {
     }
 
     this.projectService
-      .create_task(this.route.snapshot.params['id'], this.section_id, task)
+      .create_task(this.route.snapshot.params['id'], this.section.id, task)
       .subscribe((res) => {
         this.homeService.refetchInbox.next(true);
-        this.refetchData.emit();
+
+        // this.refetchData.emit();
+        this.fetchSection();
+        this.isLoading = false;
         this.activeForm(null);
       });
   }
@@ -135,7 +145,7 @@ export class SectionComponent {
       );
       const tasks_to_update: any[] = [];
       currentContainer[newIndex].position = newIndex;
-      currentContainer[newIndex].taskable_id = this.section_id;
+      currentContainer[newIndex].taskable_id = this.section.id;
 
       tasks_to_update.push(currentContainer[newIndex]);
 
@@ -160,10 +170,12 @@ export class SectionComponent {
   }
 
   deleteTask(taskId: string) {
+    this.section.tasks = this.section.tasks.filter((task) => task.id != taskId);
     this.projectService
-      .delete_task(this.route.snapshot.params['id'], this.section_id, taskId)
+      .delete_task(this.route.snapshot.params['id'], this.section.id, taskId)
       .subscribe((res) => {
-        this.refetchData.emit();
+        // this.refetchData.emit();
+        this.fetchSection();
       });
   }
 
@@ -174,7 +186,7 @@ export class SectionComponent {
         des: des,
         id: id,
         due_date: due_date,
-        section_id: this.section_id,
+        section_id: this.section.id,
       },
     });
 

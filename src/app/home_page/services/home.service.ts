@@ -46,6 +46,7 @@ export class HomeService {
       }
     );
   }
+
   update_tasks_multiple(tasks: Task[]) {
     return this.http.put(
       `https://taskweaveapi.onrender.com/api/v1/update_day_tasks_multiple`,
@@ -66,6 +67,14 @@ export class HomeService {
   get_today_tasks(): Partial<Observable<Task[]>> {
     return this.http.get<Task[]>(
       'https://taskweaveapi.onrender.com/api/v1/today_tasks',
+      {
+        headers: this.headers,
+      }
+    );
+  }
+  get_daily_tasks(date: any): Partial<Observable<Task[]>> {
+    return this.http.get<Task[]>(
+      `https://taskweaveapi.onrender.com/api/v1/daily_tasks?date=${date}`,
       {
         headers: this.headers,
       }

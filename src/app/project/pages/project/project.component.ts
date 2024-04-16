@@ -19,6 +19,7 @@ export class ProjectComponent {
   sectionName: string;
   isAddSectionForm: boolean;
   isLoading: boolean = true;
+  isSaving: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -32,6 +33,8 @@ export class ProjectComponent {
     this.route.params.subscribe((params: Params) => {
       this.projectService.get_project(params['id']).subscribe((res) => {
         this.project = res;
+        console.log(res);
+
         this.isLoading = false;
         this.isAddSectionForm = res.sections.length == 0;
       });
@@ -41,16 +44,19 @@ export class ProjectComponent {
     this.projectService
       .update_project(this.project.title, this.project.id)
       .subscribe((res) => {
+        this.project.title = res.title;
         this.projectService.refetchProjects.next(true);
       });
   }
   addSection() {
+    this.isSaving = true;
     this.projectService
       .create_section(this.project.id, this.sectionName)
       .subscribe((res) => {
         this.sectionName = null;
         this.projectService.get_project(this.project.id).subscribe((res) => {
           this.project = res;
+          this.isSaving = false;
           this.isAddSectionForm = false;
         });
       });

@@ -50,7 +50,7 @@ export class ProjectService {
   }
   update_project(title: string, id: string): Partial<Observable<Project>> {
     return this.http.put<Project>(
-      `https://taskweaveapi.onrender.com/api/v1/${id}`,
+      `https://taskweaveapi.onrender.com/api/v1/projects/${id}`,
       {
         project: { title },
       },

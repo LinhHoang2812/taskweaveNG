@@ -67,7 +67,7 @@
     </div>
 
     <div [ngClass]="addProject ? 'block ' : 'hidden'">
-      <form (submit)="onSave()" class="project-form">
+      <form (submit)="onSave()" class="project-form relative">
         <input
           class="border-none focus:outline-none p-1 text-sm project-form"
           type="text"
@@ -75,6 +75,19 @@
           name="projectName"
           placeholder="Project name..."
         />
+        <div
+          [ngClass]="
+            isLoading
+              ? 'absolute w-full h-full top-0 left-0 flex justify-center'
+              : ''
+          "
+        >
+          <mat-spinner
+            [diameter]="20"
+            color="primary"
+            *ngIf="isLoading"
+          ></mat-spinner>
+        </div>
       </form>
     </div>
 

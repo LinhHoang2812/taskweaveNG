@@ -64,13 +64,20 @@ export class SingleDayComponent {
       };
     });
   }
+  fetch_daily_tasks(date: any) {
+    this.homeService.get_daily_tasks(date).subscribe((res: Task[]) => {
+      this.tasks = res;
+    });
+  }
   create_day_task() {
     this.isLoading = true;
 
     this.homeService
       .create_day_task({ title: this.task_title, due_date: this.day.date })
       .subscribe((res) => {
-        this.fetchData.emit();
+        this.fetch_daily_tasks(this.due_date);
+        this.task_title = null;
+        // this.fetchData.emit();
         this.isLoading = false;
         if (this.isToday) {
           this.homeService.refetchInbox.next(true);
@@ -81,7 +88,9 @@ export class SingleDayComponent {
     this.tasks = this.tasks.filter((task) => task.id !== id);
 
     this.homeService.delete_day_task(id).subscribe((res) => {
-      this.fetchData.emit();
+      // this.fetchData.emit();
+
+      this.fetch_daily_tasks(this.due_date);
 
       if (this.isToday) {
         this.homeService.refetchInbox.next(true);

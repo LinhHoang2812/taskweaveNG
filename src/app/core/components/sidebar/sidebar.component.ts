@@ -25,6 +25,7 @@ export class SidebarComponent {
   addProject: boolean = false;
   projectName: string;
   activeId: string;
+  isLoading: boolean = false;
   constructor(
     public coreService: CoreService,
     public authService: AuthService,
@@ -53,17 +54,18 @@ export class SidebarComponent {
     });
   }
   onSave() {
+    this.isLoading = true;
     this.projectService
       .create_project({ title: this.projectName })
       .subscribe((res) => {
         this.projectService.get_projects().subscribe((res: Project[]) => {
           this.projects = res;
+          this.isLoading = false;
+          this.addProject = false;
+          this.projectName = null;
         });
         this.router.navigate(['projects', res.id]);
       });
-
-    this.addProject = false;
-    this.projectName = null;
   }
   closeProjectForm(e: any) {
     if (!e.target.classList.contains('project-form')) {

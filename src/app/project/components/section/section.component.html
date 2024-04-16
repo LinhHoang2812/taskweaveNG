@@ -57,8 +57,8 @@
   </div>
   <div
     class="flex gap-2 items-center cursor-pointer group add-task"
-    *ngIf="(projectService.activeFormId | async) !== section_id"
-    (click)="activeForm(this.section_id)"
+    *ngIf="(projectService.activeFormId | async) !== section.id"
+    (click)="activeForm(this.section.id)"
     cdkDrag
     cdkDragDisabled="true"
   >
@@ -67,7 +67,7 @@
   </div>
   <form
     class="flex flex-col gap-4 w-full p-2 border-[1px] border-gray-300 rounded"
-    *ngIf="(projectService.activeFormId | async) === section_id"
+    *ngIf="(projectService.activeFormId | async) === section.id"
     [formGroup]="form"
     (submit)="createTask()"
     cdkDrag
@@ -117,7 +117,14 @@
           type="submit"
           [disabled]="!form.valid"
         >
-          <span class="material-symbols-outlined task"> send </span>
+          <span class="material-symbols-outlined task" *ngIf="!isLoading">
+            send
+          </span>
+          <mat-spinner
+            [diameter]="20"
+            color="accent"
+            *ngIf="isLoading"
+          ></mat-spinner>
         </button>
         <button
           class="px-1 flex justify-center items-center text-white bg-gray-400 rounded"

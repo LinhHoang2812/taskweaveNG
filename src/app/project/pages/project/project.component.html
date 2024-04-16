@@ -1,7 +1,7 @@
-<div class="pt-20 flex justify-center">
-  <mat-spinner [diameter]="50" color="primary" *ngIf="isLoading"></mat-spinner>
+<div class="flex justify-center pt-12" *ngIf="isLoading">
+  <mat-spinner [diameter]="50" color="primary"></mat-spinner>
 </div>
-<div *ngIf="project" class="h-full px-5">
+<div *ngIf="project" class="h-full pl-5 pt-12">
   <cdk-virtual-scroll-viewport
     orientation="horizontal"
     [itemSize]="project.sections.length + 1"
@@ -27,10 +27,7 @@
       cdkDropListGroup
     >
       <div *ngFor="let s of project.sections" cdkDrag>
-        <app-section
-          [section_id]="s.id"
-          (refetchData)="refetchData()"
-        ></app-section>
+        <app-section [section]="s" (refetchData)="refetchData()"></app-section>
       </div>
       <div>
         <button
@@ -56,8 +53,16 @@
             name="sectionName"
           />
           <div class="flex gap-2">
-            <button class="px-2 text-white bg-red-400 rounded" type="submit">
-              Save
+            <button
+              class="p-2 text-white bg-red-400 rounded flex justify-center"
+              type="submit"
+            >
+              <mat-spinner
+                [diameter]="20"
+                color="accent"
+                *ngIf="isSaving"
+              ></mat-spinner>
+              <span *ngIf="!isSaving">Save</span>
             </button>
             <button
               class="px-2 text-white bg-gray-400 rounded"
